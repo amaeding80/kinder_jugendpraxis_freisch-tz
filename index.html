@@ -213,6 +213,8 @@
 
     /* ── NEEDED ── */
     .needed-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 28px; }
+    .cookie-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 22px; }
+    .cookie-choice-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 22px; }
     .need-item {
       background: rgba(184,146,58,0.06); border: 1px solid rgba(184,146,58,0.22);
       border-radius: 12px; padding: 18px 20px;
@@ -443,6 +445,9 @@
       /* DSGVO Karte */
       .dsgvo-grid { grid-template-columns: 1fr; gap: 12px; }
       .dsgvo-scenario { padding: 14px; }
+      .cookie-split-grid { grid-template-columns: 1fr; gap: 12px; }
+      .cookie-choice-grid { grid-template-columns: 1fr; gap: 10px; }
+      .needed-grid { grid-template-columns: 1fr; }
 
       /* Deliverables */
       .deliverables-grid { gap: 10px; }
@@ -739,7 +744,7 @@
         </div>
 
         <!-- 2-Spalten: Notwendig vs Optional -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px">
+        <div class="cookie-split-grid">
 
           <!-- Notwendige Cookies -->
           <div style="background:#EAF2EC;border:1px solid rgba(74,124,89,0.3);border-radius:10px;padding:18px 20px">
@@ -797,7 +802,7 @@
           <div style="flex:1;height:1px;background:var(--border)"></div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:22px">
+        <div class="cookie-choice-grid">
 
           <div style="border:2px solid #fca5a5;border-radius:8px;padding:16px;background:#FEF2F2">
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
