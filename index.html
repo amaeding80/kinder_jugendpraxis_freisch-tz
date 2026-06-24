@@ -303,7 +303,7 @@
     .cta-signature strong { color: rgba(255,255,255,0.5); }
 
     /* ── PORTFOLIO SLIDER ── */
-    .pf-slider-wrap { position: relative; margin-top: 36px; }
+    .pf-slider-wrap { position: relative; margin-top: 36px; overflow: hidden; }
     .pf-slider { display: flex; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
     .pf-slide { min-width: 100%; box-sizing: border-box; }
 
@@ -422,7 +422,17 @@
       .sit-card h3 { font-size: 1rem; }
       .sit-card p, .sit-card--wide .bfsg-body p { font-size: 0.92rem; }
 
-      /* Portfolio Slider */
+      /* Portfolio Slider – Mobile: vertikal gestapelt statt Karussell */
+      .pf-slider-wrap { overflow: visible; }
+      .pf-slider {
+        flex-direction: column !important;
+        transform: none !important;
+        transition: none !important;
+        gap: 20px;
+      }
+      .pf-slide { min-width: 100%; }
+      .pf-arrow { display: none; }
+      .pf-dots { display: none; }
       .pf-slide-title { font-size: 1rem; }
       .pf-frame-outer { height: 220px; }
       .pf-frame-inner { transform: scale(0.28); }
@@ -1097,7 +1107,10 @@
   var pfTotal = 5;
   var pfTimer;
 
+  function pfIsMobile() { return window.innerWidth <= 767; }
+
   function pfGoTo(idx) {
+    if (pfIsMobile()) return;
     pfCurrent = (idx + pfTotal) % pfTotal;
     document.getElementById('pfSlider').style.transform = 'translateX(-' + (pfCurrent * 100) + '%)';
     document.querySelectorAll('.pf-dot').forEach(function(d, i) {
@@ -1110,16 +1123,29 @@
 
   function pfResetTimer() {
     clearInterval(pfTimer);
-    pfTimer = setInterval(function() { pfGoTo(pfCurrent + 1); }, 5000);
+    if (!pfIsMobile()) {
+      pfTimer = setInterval(function() { pfGoTo(pfCurrent + 1); }, 5000);
+    }
   }
 
   pfResetTimer();
 
-  // Touch swipe
+  // Bei Resize: Slider zurücksetzen oder wieder aktivieren
+  window.addEventListener('resize', function() {
+    if (pfIsMobile()) {
+      clearInterval(pfTimer);
+      document.getElementById('pfSlider').style.transform = '';
+    } else {
+      pfGoTo(pfCurrent);
+    }
+  });
+
+  // Touch swipe (nur Desktop / Tablet)
   var pfStartX = 0;
   var pfSliderEl = document.getElementById('pfSlider');
   pfSliderEl.addEventListener('touchstart', function(e) { pfStartX = e.touches[0].clientX; }, { passive: true });
   pfSliderEl.addEventListener('touchend', function(e) {
+    if (pfIsMobile()) return;
     var dx = e.changedTouches[0].clientX - pfStartX;
     if (Math.abs(dx) > 40) pfStep(dx < 0 ? 1 : -1);
   });
